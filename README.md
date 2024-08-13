@@ -104,3 +104,9 @@ withr	withr	2.5.0	2.5.0	FALSE	FALSE	2022-03-03	CRAN (R 4.1.3)
 xtable	xtable	1.8.4	1.8-4	FALSE	FALSE	2019-04-21	CRAN (R 4.1.3)
 zoo	zoo	1.8.12	1.8-12	FALSE	FALSE	2023-04-13	CRAN (R 4.1.3)
 ```
+
+## Ackowledgement
+
+I don't own the codes. They are copied from https://github.com/Aagaardlab/placenta-spatial-transcriptomics along with [this peer reviewed paper](https://pubmed.ncbi.nlm.nih.gov/32681824/)
+The original authors were invited as the managers of this repo.
+

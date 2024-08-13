@@ -110,5 +110,5 @@ zoo	zoo	1.8.12	1.8-12	FALSE	FALSE	2023-04-13	CRAN (R 4.1.3)
 
 I don't own the codes. They are copied from [this github repo](https://github.com/Aagaardlab/placenta-spatial-transcriptomics) along with [this peer reviewed paper](https://pubmed.ncbi.nlm.nih.gov/32681824/)
 
-The original authors were invited as the collaborator of this repo.
+The original author was invited as the collaborator of this repo.
 

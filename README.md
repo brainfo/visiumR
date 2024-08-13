@@ -6,13 +6,14 @@ R source file which contains functions
 2. to integrate samples and annotate the cell types
 3. to score any gene set spatially
 
-Please clone the directory and source visiumR.r
+Please clone the directory
 
 testdata were found in testdata/
 
 For utils 1.:  
 
 ```{r}
+source("visiumR.r")
 sample_ids <- list.dirs("testdata/", full.names = F, recursive = F)
 lapply(sample_ids, run_single)
 ```
@@ -107,6 +108,7 @@ zoo	zoo	1.8.12	1.8-12	FALSE	FALSE	2023-04-13	CRAN (R 4.1.3)
 
 ## Ackowledgement
 
-I don't own the codes. They are copied from https://github.com/Aagaardlab/placenta-spatial-transcriptomics along with [this peer reviewed paper](https://pubmed.ncbi.nlm.nih.gov/32681824/)
-The original authors were invited as the managers of this repo.
+I don't own the codes. They are copied from [this github repo](https://github.com/Aagaardlab/placenta-spatial-transcriptomics) along with [this peer reviewed paper](https://pubmed.ncbi.nlm.nih.gov/32681824/)
+
+The original authors were invited as the collaborator of this repo.
 

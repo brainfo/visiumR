@@ -39,7 +39,7 @@ $ctype
 $date
 '2024-08-12'
 $pandoc
-'2.19.2 @ /mnt/data/hong/anaconda3/envs/r4/bin/pandoc'
+'2.19.2'
 $packages
 A packages_info: 113 × 11
 package	ondiskversion	loadedversion	path	is_base	date	source	md5ok

@@ -99,7 +99,7 @@ plot2 <- SpatialFeaturePlot(manual, features = "nCount_Spatial", pt.size.factor 
     ## crop = FALSE,
 wrap_plots(plot1, plot2)
 plot3 <- wrap_plots(plot1, plot2)
-ggsave(paste0( sample_id, "manual_unfiltered_nCount_Spatial.pdf")), plot = plot3, device = "pdf", width = 8, height = 4, units = "in")
+ggsave(paste0( sample_id, "manual_unfiltered_nCount_Spatial.pdf"), plot = plot3, device = "pdf", width = 8, height = 4, units = "in")
 
 plot1 <- VlnPlot(manual, features = "nFeature_Spatial", pt.size = 0.1) + NoLegend()
 plot2 <- SpatialFeaturePlot(manual, features = "nFeature_Spatial") + theme(legend.position = "right")
@@ -108,7 +108,7 @@ plot3 <- wrap_plots(plot1, plot2)
 ggsave(paste0( sample_id, "manual_unfiltered_nFeature_Spatial.pdf"), plot = plot3, device = "pdf", width = 8, height = 4, units = "in")
 
 qc.vlnplot <- VlnPlot(manual, features = c("nFeature_Spatial", "nCount_Spatial", "percent.mt", "percent.ribo"), ncol=4, group.by = "orig.ident", pt.size = 0.000001) + NoLegend()
-ggsave(paste0( sample_id, "manual_unfiltered_QC_vlnplot.pdf")), plot = qc.vlnplot, device = "pdf", width = 16, height = 8, units = "in")
+ggsave(paste0( sample_id, "manual_unfiltered_QC_vlnplot.pdf"), plot = qc.vlnplot, device = "pdf", width = 16, height = 8, units = "in")
 
 qc.vlnplot
 ## Iteratively change filter settings based on what this library looks like. Examine unfiltered vs filtered to see the final effects (filtering out likely doublets/empty GEMs)
@@ -118,17 +118,17 @@ manual2 <- subset(manual, subset = nFeature_Spatial > 200 & nFeature_Spatial < 1
 ncol(manual2)
   #   1480
 qc.vlnplot <- VlnPlot(manual2, features = c("nFeature_Spatial", "nCount_Spatial", "percent.mt", "percent.ribo"), ncol=4, group.by = "orig.ident", pt.size = 0.000001) + NoLegend()
-ggsave(paste0( sample_id, "manual_filtered_QC_vlnplot.pdf")), plot = qc.vlnplot, device = "pdf", width = 16, height = 8, units = "in")
+ggsave(paste0( sample_id, "manual_filtered_QC_vlnplot.pdf"), plot = qc.vlnplot, device = "pdf", width = 16, height = 8, units = "in")
 manual <- manual2
 rm(manual2)
 qc.vlnplot <- VlnPlot(manual, features = c("nFeature_Spatial", "nCount_Spatial", "percent.mt", "percent.ribo"), ncol=4, group.by = "orig.ident", pt.size = 0.000001) + NoLegend()
-ggsave(paste0( sample_id, "manual_filtered_QC_vlnplot.pdf")), plot = qc.vlnplot, device = "pdf", width = 16, height = 8, units = "in")
+ggsave(paste0( sample_id, "manual_filtered_QC_vlnplot.pdf"), plot = qc.vlnplot, device = "pdf", width = 16, height = 8, units = "in")
 
 plot1 <- SpatialFeaturePlot(manual, features = "nCount_Spatial", pt.size.factor = 2.0) + theme(legend.position = "right")
 plot2 <- SpatialFeaturePlot(manual, features = "nFeature_Spatial") + theme(legend.position = "right")
 wrap_plots(plot1, plot2)
 plot3 <- wrap_plots(plot1, plot2)
-ggsave(paste0( sample_id, "manual_filtered__Spatial.pdf")), plot = plot3, device = "pdf", width = 8, height = 4, units = "in")
+ggsave(paste0( sample_id, "manual_filtered__Spatial.pdf"), plot = plot3, device = "pdf", width = 8, height = 4, units = "in")
 
 ############################################################# ############################################################# #############################################################
 ############################################################# S15: Dimension Reduction, Visualization, and DE #############################################################

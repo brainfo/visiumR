@@ -179,27 +179,6 @@ manual <- ScaleData(manual, features = manual.var, assay="Spatial")
 Idents(manual) <- "seurat_clusters"
 de_markers <- FindAllMarkers(manual, features = manual.var, assay = "Spatial", only.pos = TRUE, min.pct = 0.10, logfc.threshold =  0.693)
 write.table(de_markers, paste(sample_id, "DEGs_byclusters_pos-0.693lnFC.txt", sep='_'), sep="\t")
-if(nrow(de_markers)>=5){
-  top <- de_markers %>%
-    group_by(cluster) %>%
-    top_n(n = 5, wt = avg_log2FC)}
-
-else {
-  top <- try(de_markers %>%
-    group_by(cluster))
-      if (inherits(top, "try-error")) {
-        # error handling code, maybe just skip this iteration using
-        next
-      }
-}
-
-  top <- top$gene
-  unique.top <- unique(top)
-  top.heatmap <- DoHeatmap(manual, features = unique.top, raster = FALSE)
-  ggsave(paste0(sample_id, "manual_top_markers_logfc_heatmaptop3k.pdf"), plot = top.heatmap, device = "pdf", width = 7, height = 9, units = "in")
-  png(file = paste0(sample_id, "manual_top.marker-DotPlot.png"), res = 300, width = 3500, height = 1500)
-  feature.plot + theme(axis.text.x = element_text(angle = 90)) + scale_x_discrete(name = "Top Markers") + scale_y_discrete(name = "UMAP Cluster")
-  dev.off()
 
 rm_cache()
 }

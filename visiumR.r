@@ -111,13 +111,15 @@ ggsave(paste0( sample_id, "manual_unfiltered_nFeature_Spatial.pdf"), plot = plot
 qc.vlnplot <- VlnPlot(manual, features = c("nFeature_Spatial", "nCount_Spatial", "percent.mt", "percent.ribo"), ncol=4, group.by = "orig.ident", pt.size = 0.000001) + NoLegend()
 ggsave(paste0( sample_id, "manual_unfiltered_QC_vlnplot.pdf"), plot = qc.vlnplot, device = "pdf", width = 16, height = 8, units = "in")
 
-qc.vlnplot
 ## Iteratively change filter settings based on what this library looks like. Examine unfiltered vs filtered to see the final effects (filtering out likely doublets/empty GEMs)
-ncol(manual)
-  #  1505
-manual2 <- subset(manual, subset = nFeature_Spatial > 200 & nFeature_Spatial < 10000 & nCount_Spatial > 1000 & nCount_Spatial < 100000 & percent.mt > 0.000001 & percent.mt < 25 & percent.ribo < 15)
-ncol(manual2)
-  #   1480
+### Thought it should be the same for all samples
+
+manual2 <- try(subset(manual, subset = nFeature_Spatial > 200 & nFeature_Spatial < 10000 & nCount_Spatial > 1000 & nCount_Spatial < 100000 & percent.mt > 0.000001 & percent.mt < 25 & percent.ribo < 15))
+if (ncol(manual2)<10) {
+    # error handling code, maybe just skip this iteration using
+    manual2 <- subset(manual, subset = nFeature_Spatial > 5 & nFeature_Spatial < 10000 & nCount_Spatial > 50 & nCount_Spatial < 100000 & percent.mt < 30 & percent.ribo < 20)
+}
+
 qc.vlnplot <- VlnPlot(manual2, features = c("nFeature_Spatial", "nCount_Spatial", "percent.mt", "percent.ribo"), ncol=4, group.by = "orig.ident", pt.size = 0.000001) + NoLegend()
 ggsave(paste0( sample_id, "manual_filtered_QC_vlnplot.pdf"), plot = qc.vlnplot, device = "pdf", width = 16, height = 8, units = "in")
 manual <- manual2
@@ -129,7 +131,7 @@ plot1 <- SpatialFeaturePlot(manual, features = "nCount_Spatial", pt.size.factor 
 plot2 <- SpatialFeaturePlot(manual, features = "nFeature_Spatial") + theme(legend.position = "right")
 wrap_plots(plot1, plot2)
 plot3 <- wrap_plots(plot1, plot2)
-ggsave(paste0( sample_id, "manual_filtered__Spatial.pdf"), plot = plot3, device = "pdf", width = 8, height = 4, units = "in")
+ggsave(paste0( sample_id, "manual_filtered_Spatial.pdf"), plot = plot3, device = "pdf", width = 8, height = 4, units = "in")
 
 ############################################################# ############################################################# #############################################################
 ############################################################# Dimension Reduction, Visualization, and DE #############################################################
@@ -157,9 +159,10 @@ p4 <- SpatialDimPlot(manual, label = TRUE, label.size = 5, pt.size.factor = 4.0)
 p4
 p3 <- wrap_plots(p1, p2, p4)
 ggsave(paste0( sample_id, "manual_UMAP.pdf"), plot = p3, device = "pdf", width = 12, height = 4, units = "in")
-
+idents <- unique(Idents(manual))
+print(idents)
 ## UMAP split.by clusters
-p3<- SpatialDimPlot(manual, cells.highlight = CellsByIdentities(object = manual, idents = c(0, 1, 2, 3, 4, 5, 6, 7)), facet.highlight = TRUE, ncol = 3)
+p3 <- SpatialDimPlot(manual, cells.highlight = CellsByIdentities(object = manual, idents = idents), facet.highlight = TRUE, ncol = 3)
 ggsave(paste0( sample_id, "manual_UMAP_Spatial-split.by.cluster.pdf"), plot = p3, device = "pdf", width = 8, height = 10, units = "in")
 
 

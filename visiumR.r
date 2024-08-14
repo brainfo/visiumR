@@ -25,8 +25,9 @@ rm_cache <- function() {
 
 run_single <- function(sample_id){
 data_dir <- paste("testdata", sample_id,sep = '/')
+filename <- paste(sample_id, "filtered_feature_bc_matrix.h5", sep = "_")
 #### scripts modified from https://satijalab.org/seurat/articles/spatial_vignette.html#10x-visium  compiled: 2021-08-30
-manual <- Load10X_Spatial(data_dir, filename = paste(sample_id, "filtered_feature_bc_matrix.h5", sep='_'), assay = "Spatial", slice = sample_id, filter.matrix = TRUE, to.upper = TRUE)
+manual <- Load10X_Spatial(data_dir, filename = filename, assay = "Spatial", slice = sample_id, filter.matrix = TRUE, to.upper = TRUE)
 
 ## Fix transcript names that have extra dashes added after custom ref generation (e.g. GRCh38----------------------)
 old.names <- row.names(manual)
@@ -131,7 +132,7 @@ plot3 <- wrap_plots(plot1, plot2)
 ggsave(paste0( sample_id, "manual_filtered__Spatial.pdf"), plot = plot3, device = "pdf", width = 8, height = 4, units = "in")
 
 ############################################################# ############################################################# #############################################################
-############################################################# S15: Dimension Reduction, Visualization, and DE #############################################################
+############################################################# Dimension Reduction, Visualization, and DE #############################################################
 ############################################################# ############################################################# #############################################################
 ## Run SCTransform to normalize by neg. binomial
 manual <- SCTransform(manual, assay = "Spatial", verbose = FALSE)
@@ -177,41 +178,28 @@ manual <- ScaleData(manual, features = manual.var, assay="Spatial")
 
 Idents(manual) <- "seurat_clusters"
 de_markers <- FindAllMarkers(manual, features = manual.var, assay = "Spatial", only.pos = TRUE, min.pct = 0.10, logfc.threshold =  0.693)
-write.table(de_markers, "S15_DEGs_byclusters_pos-0.693lnFC.txt", sep="\t")
-top5 <- de_markers %>% group_by(cluster) %>% top_n(n = 5, wt = avg_log2FC)
-# View(top5)
-  ## make sure there are some transcripts that passed the lnFC(>0.693)
-    ## cluster 0 does not have sig. genes
-de_markers <- FindAllMarkers(manual, features = manual.var, assay = "Spatial", only.pos = TRUE, min.pct = 0.10, logfc.threshold =  0.2)
-top5 <- de_markers %>% group_by(cluster) %>% top_n(n = 5, wt = avg_log2FC)
-# View(top5)
+write.table(de_markers, paste(sample_id, "DEGs_byclusters_pos-0.693lnFC.txt", sep='_'), sep="\t")
+if(nrow(de_markers)>=5){
+  top <- de_markers %>%
+    group_by(cluster) %>%
+    top_n(n = 5, wt = avg_log2FC)}
 
-top5.heatmap <- DoHeatmap(manual, features = top5$gene, raster = FALSE)
-ggsave(paste0( sample_id, "manual_top5_markers_logfc_heatmaptop3k.pdf"), plot = top5.heatmap, device = "pdf", width = 7, height = 9, units = "in")
-top5.heatmap <- DoHeatmap(manual, features = top5$gene, slot="counts", raster = FALSE)
-ggsave(paste0( sample_id, "manual_top5_markers_counts_heatmaptop3k.pdf"), plot = top5.heatmap, device = "pdf", width = 7, height = 9, units = "in")
+else {
+  top <- try(de_markers %>%
+    group_by(cluster))
+      if (inherits(top, "try-error")) {
+        # error handling code, maybe just skip this iteration using
+        next
+      }
+}
 
-top2 <- de_markers %>% group_by(cluster) %>% top_n(n = 2, wt = avg_log2FC)
-top2 <- top2$gene
-unique.top2 <- unique(top2)
-feature.plot <- DotPlot(manual, features = unique.top2)
-png(file=paste0( sample_id, "manual_top2.marker-DotPlot.png"),res=300, width=2500, height=1500)
-feature.plot + theme(axis.text.x = element_text(angle = 90)) + scale_x_discrete(name ="Top Markers") + scale_y_discrete(name ="UMAP Cluster")
-dev.off()
+  top <- top$gene
+  unique.top <- unique(top)
+  top.heatmap <- DoHeatmap(manual, features = unique.top, raster = FALSE)
+  ggsave(paste0(sample_id, "manual_top_markers_logfc_heatmaptop3k.pdf"), plot = top.heatmap, device = "pdf", width = 7, height = 9, units = "in")
+  png(file = paste0(sample_id, "manual_top.marker-DotPlot.png"), res = 300, width = 3500, height = 1500)
+  feature.plot + theme(axis.text.x = element_text(angle = 90)) + scale_x_discrete(name = "Top Markers") + scale_y_discrete(name = "UMAP Cluster")
+  dev.off()
 
-top2 <- de_markers %>% group_by(cluster) %>% top_n(n = 3, wt = avg_log2FC)
-top2 <- top2$gene
-unique.top2 <- unique(top2)
-feature.plot <- DotPlot(manual, features = unique.top2)
-png(file=paste0( sample_id, "manual_top3.marker-DotPlot.png"),res=300, width=3000, height=1500)
-feature.plot + theme(axis.text.x = element_text(angle = 90)) + scale_x_discrete(name ="Top Markers") + scale_y_discrete(name ="UMAP Cluster")
-dev.off()
-top2 <- de_markers %>% group_by(cluster) %>% top_n(n = 5, wt = avg_log2FC)
-top2 <- top2$gene
-unique.top2 <- unique(top2)
-feature.plot <- DotPlot(manual, features = unique.top2)
-png(file=paste0( sample_id, "manual_top5.marker-DotPlot.png"),res=300, width=3500, height=1500)
-feature.plot + theme(axis.text.x = element_text(angle = 90)) + scale_x_discrete(name ="Top Markers") + scale_y_discrete(name ="UMAP Cluster")
-dev.off()
 rm_cache()
 }

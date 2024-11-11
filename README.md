@@ -2,9 +2,9 @@
 
 R source file which contains functions
 
-1. to run spatial clustering and markers finding for each sample. Thus easy to be applied on any samples
-2. to integrate samples and annotate the cell types
-3. to score any gene set spatially
+[x] to run spatial clustering and markers finding for each sample. Thus easy to be applied on any samples
+[ ] to integrate samples and annotate the cell types
+[ ] to score any gene set spatially
 
 Please clone the directory
 
@@ -108,7 +108,6 @@ zoo	zoo	1.8.12	1.8-12	FALSE	FALSE	2023-04-13	CRAN (R 4.1.3)
 
 ## Ackowledgement
 
-I don't own the codes. They are copied from [this github repo](https://github.com/Aagaardlab/placenta-spatial-transcriptomics) along with [this peer reviewed paper](https://pubmed.ncbi.nlm.nih.gov/32681824/)
+Codes for spatial clustering and markers finding are copied from [this github repo](https://github.com/Aagaardlab/placenta-spatial-transcriptomics) along with [this peer reviewed paper](https://pubmed.ncbi.nlm.nih.gov/32681824/)
 
 The original author was invited as the collaborator of this repo.
-

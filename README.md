@@ -2,9 +2,9 @@
 
 R source file which contains functions
 
-[x] to run spatial clustering and markers finding for each sample. Thus easy to be applied on any samples
-[ ] to integrate samples and annotate the cell types
-[ ] to score any gene set spatially
+- [x] to run spatial clustering and markers finding for each sample. Thus easy to be applied on any samples
+- [ ] to integrate samples and annotate the cell types
+- [ ] to score any gene set spatially
 
 Please clone the directory
 

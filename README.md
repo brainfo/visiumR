@@ -5,6 +5,7 @@ R source file which contains functions
 - [x] to run spatial clustering and markers finding for each sample. Thus easy to be applied on any samples
 - [ ] to integrate samples and annotate the cell types
 - [ ] to score any gene set spatially
+- [ ] to digital unroll the data along any given line
 
 Please clone the directory
 
